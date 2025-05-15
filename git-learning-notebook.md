@@ -41,7 +41,7 @@ git中的文件也存在几种状态
 |-|-|
 |git add|添加到暂存区|
 |-|-|
-|git commit|提交|
+|git commit|提交(只会提交暂存区中的文件，不会提交工作区中的文件)|
 
 ```bash
 # 示例
@@ -50,4 +50,9 @@ git status
 echo "这是第一个文件" > file1.txt
 ls
 cat file1.txt
-git 
+git status
+git add file1.txt
+echo "这是第二个文件" > file2.txt
+git status
+git commit -m "first commit" # 使用-m参数指定提交的信息，这个信息会被记录到仓库中
+
