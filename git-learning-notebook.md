@@ -1,5 +1,5 @@
 # **git学习笔记**
-## **1.安装和初始化**
+## **1 安装和初始化**
 ```bash
 git -version # 查看版本号信息
 git config --global user.name "fengliangnight" # 配置用户名 其中，--global表示全局配置，对所有仓库有效  使用最多
@@ -10,7 +10,7 @@ git config --global user.email username@mail.com # 配置邮箱
 git config --global credential.helper store # 保存用户名和密码，这样就不用每次都输入了
 git config --global --list # 参看git的配置信息
 ```
-## **2.新建仓库**
+## **2 新建仓库**
 创建仓库  
 方式一  
 ```bash
@@ -63,7 +63,7 @@ git commit -m "第二次提交"
 git log # 查看提交记录
 git log --oneline # 查看简洁的提交记录
 ```
-
+ 
 ## **5 git reset回退版本**
 git reset的三种模式  
 ||工作区|暂存区|
@@ -126,3 +126,96 @@ git 中的所有操作都是可以回溯的
 ```git reflog```查看我们操作的历史记录  
 找到误操作之前的版本号  
 ```git reset --hard 版本号```回退到这个版本
+
+## **6 使用git diff查看差异**
+|```git diff```|可以用来查看文件在工作区 暂存区以及版本库之间的差异|
+|-|-|
+||还可以查看文件在两个特定版本之间的差异|
+||文件在两个分支之间的差异|
+    
+```git diff```如果什么都不加的话默认比较的是工作区与暂存区之间的差异，它会显示更改的文件以及更改的详细信息
+```bash
+# 示例
+git init repo
+cd repo
+echo 111 > file1.txt
+echo 222 > file2.txt
+echo 333 > file3.txt
+git add file1.txt
+git commit -m "commit1"
+git add file2.txt
+git commit -m "commit2"
+git add file3.txt
+git commit -m "commit3"
+git log -oneline
+    # ad3e1f2 (HEAD -> master) commit3
+    # 477b262 commit2
+    # 3b39300 commit1
+vi file3.txt # 将文件内容改成  three
+git diff
+    # diff --git a/file3.txt b/file3.txt
+    # index 55bd0ac..1d19714 100644
+    # --- a/file3.txt
+    # +++ b/file3.txt
+    # @@ -1 +1 @@
+    # -333
+    # +three
+    # \ No newline at end of file
+git add .
+git diff # 没有任何内容
+git diff HEAD # 比较 工作区 和 版本库 之间的差异
+    # diff --git a/.ipynb_checkpoints/file3-checkpoint.txt b/.ipynb_checkpoints/file3-checkpoint.txt
+    # new file mode 100644
+    # index 0000000..1d19714
+    # --- /dev/null
+    # +++ b/.ipynb_checkpoints/file3-checkpoint.txt
+    # @@ -0,0 +1 @@
+    # +three
+    # \ No newline at end of file
+    # diff --git a/file3.txt b/file3.txt
+    # index 55bd0ac..1d19714 100644
+    # --- a/file3.txt
+    # +++ b/file3.txt
+    # @@ -1 +1 @@
+    # -333
+    # +three
+    # \ No newline at end of file
+git diff --cached # 比较 暂存区 与 版本库 之间的差异
+    # diff --git a/.ipynb_checkpoints/file3-checkpoint.txt b/.ipynb_checkpoints/file3-checkpoint.txt
+    # new file mode 100644
+    # index 0000000..1d19714
+    # --- /dev/null
+    # +++ b/.ipynb_checkpoints/file3-checkpoint.txt
+    # @@ -0,0 +1 @@
+    # +three
+    # \ No newline at end of file
+    # diff --git a/file3.txt b/file3.txt
+    # index 55bd0ac..1d19714 100644
+    # --- a/file3.txt
+    # +++ b/file3.txt
+    # @@ -1 +1 @@
+    # -333
+    # +three
+    # \ No newline at end of file
+git commit -m "commit4"
+git diff --cached # 没有任何内容
+git diff HEAD # 也没有任何内容
+              # 表示 工作区 暂存区 版本库 之间的内容是一致的
+git log --oneline
+    # 79114d8 (HEAD -> master) commit4
+    # ad3e1f2 commit3
+    # 477b262 commit2
+    # 3b39300 commit1
+git diff 477b262 ad3e1f2
+    # diff --git a/file3.txt b/file3.txt
+    # new file mode 100644
+    # index 0000000..55bd0ac
+    # --- /dev/null
+    # +++ b/file3.txt
+    # @@ -0,0 +1 @@
+    # +333
+git diff ad3e1f2 HEAD
+git diff HEAD~ HEAD # HEAD~表示上一个版本
+git diff HEAD^ HEAD # HEAD^也表示上一个版本
+git diff HEAD~2 HEAD # HEAD~2表示HEAD之前的两个版本
+git diff HEAD~3 HEAD file3.txt # 在后面加上文件名 就是会查看对应文件的差异内容
