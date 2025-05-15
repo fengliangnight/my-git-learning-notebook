@@ -25,7 +25,7 @@ git 的本地数据管理分为三个区域：
 工作区(Working Directory)  
 暂存区(staging Area/Index)  
 本地仓库(Local Repository)  
-|工作区||暂存区||本地仓库| 
+|工作区|     |暂存区|     |本地仓库| 
 |-|-|-|-|-|
 |.git所在的目录|<span style="color:green">$\xrightarrow{\text{git add}}$</span>|.git/index|<span style="color:green">$\xrightarrow{\text{git add}}$</span>|.git/objects|
   
@@ -38,9 +38,7 @@ git中的文件也存在几种状态
 |git init|创建仓库|
 |-|-|
 |git status|查看仓库状态|
-|-|-|
 |git add|添加到暂存区|
-|-|-|
 |git commit|提交(只会提交暂存区中的文件，不会提交工作区中的文件)|
 
 ```bash
