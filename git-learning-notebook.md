@@ -27,7 +27,7 @@ git 的本地数据管理分为三个区域：
 本地仓库(Local Repository)  
 |工作区|     |暂存区|     |本地仓库| 
 |-|-|-|-|-|
-|.git所在的目录|<span style="color:green">```git add```<\span>|.git/index|<span style="color:green">```git commit```</span>|.git/objects|
+|.git所在的目录|<span style="color:green">```git add```|.git/index|<span style="color:green">```git commit```</span>|.git/objects|
   
 git中的文件也存在几种状态  
 |未跟踪(Untrack)|未修改(unmodified)|已修改(Modified)|已暂存(staged)|
