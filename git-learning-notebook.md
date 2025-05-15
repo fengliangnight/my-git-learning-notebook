@@ -219,3 +219,181 @@ git diff HEAD~ HEAD # HEAD~表示上一个版本
 git diff HEAD^ HEAD # HEAD^也表示上一个版本
 git diff HEAD~2 HEAD # HEAD~2表示HEAD之前的两个版本
 git diff HEAD~3 HEAD file3.txt # 在后面加上文件名 就是会查看对应文件的差异内容
+```
+## **7 使用git rm删除文件**
+```bash
+git init my-repo
+cd my-repo
+echo 111 > file1.txt
+echo 222 > file2.txt
+echo 333 > file3.txt
+echo 444 > file4.txt
+echo 555 > file5.sh
+git add .
+rm file1.txt
+ls
+git status
+    # 位于分支 master
+
+    # 尚无提交
+
+    # 要提交的变更：
+    #（使用 "git rm --cached <文件>..." 以取消暂存）
+    #        新文件：   file1.txt
+    #        新文件：   file2.txt
+    #        新文件：   file3.txt
+    #        新文件：   file4.txt
+    #        新文件：   file5.sh
+
+    # 尚未暂存以备提交的变更：
+    #  （使用 "git add/rm <文件>..." 更新要提交的内容）
+    #  （使用 "git restore <文件>..." 丢弃工作区的改动）
+    #        删除：     file1.txt
+git ls-files
+    # file1.txt
+    # file2.txt
+    # file3.txt
+    # file4.txt
+    # file5.sh
+# git add file1.txt
+git add .
+git ls-files
+    # file2.txt
+    # file3.txt
+    # file4.txt
+    # file5.sh
+git rm -f file2.txt
+git status
+    # 位于分支 master
+
+    # 尚无提交
+
+    # 要提交的变更：
+    #  （使用 "git rm --cached <文件>..." 以取消暂存）
+    #        新文件：   file3.txt
+    #        新文件：   file4.txt
+    #        新文件：   file5.sh
+ls
+    # file3.txt  file4.txt  file5.sh
+git commit -m "delete"
+```
+## **8 .gitignore忽略文件**
+|.gitignore||
+|-|-|
+|√|忽略日志文件和文件夹|
+|√|忽略所有.class文件|
+|√|忽略所有.o文件|
+|√|忽略所有.env文件|
+|√|忽略所有.zip和.tar文件|
+|√|忽略所有.pem文件|
+||...|
+    
+**应该忽略哪些文件**
+1. 系统或软件自动生成的文件
+2. 编译产生的中间文件和结果文件
+3. 运行时生成日志文件、缓存文件、临时文件
+4. 涉及身份、密码、口令、密钥等敏感信息文件
+```bash
+# 示例
+cd my-repo
+echo "some log" > access.log
+git status
+    # 位于分支 master
+    # 未跟踪的文件:
+    #  （使用 "git add <文件>..." 以包含要提交的内容）
+    #        access.log
+
+    # 提交为空，但是存在尚未跟踪的文件（使用 "git add" 建立跟踪）
+echo "other log" > other.log
+echo access.log > .gitignore
+cat .gitignore
+git status
+    # 位于分支 master
+    # 未跟踪的文件:
+    #  （使用 "git add <文件>..." 以包含要提交的内容）
+    #        .gitignore
+    #        other.log
+
+    # 提交为空，但是存在尚未跟踪的文件（使用 "git add" 建立跟踪）
+git add .
+git status
+git commit -m "ignore"
+git ls-files
+    # .gitignore
+    # file3.txt
+    # file4.txt
+    # file5.sh
+    # other.log
+vi .gitignore
+    # 加上一行 *.log
+echo hello > hello.log
+git status
+    # 位于分支 master
+    # 尚未暂存以备提交的变更：
+    #  （使用 "git add <文件>..." 更新要提交的内容）
+    #  （使用 "git restore <文件>..." 丢弃工作区的改动）
+    #        修改：     .gitignore
+
+    # 修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
+git commit -am "test ignore log" # -am 参数，同时完成添加至暂存区和提交至仓库的两个操作
+git ls-files
+    # .gitignore
+    # file3.txt
+    # file4.txt
+    # file5.sh
+    # other.log
+echo "modeified" >> other.log # >> 表示追加到文件的后面
+git status
+    # 位于分支 master
+    # 尚未暂存以备提交的变更：
+    #  （使用 "git add <文件>..." 更新要提交的内容）
+    #  （使用 "git restore <文件>..." 丢弃工作区的改动）
+    #        修改：     other.log
+
+    # 修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
+# git 还是注意到了other.log的变化
+# .gitignore生效需要有一个前提： 这个文件不能是已经被添加到版本库中的文件
+git diff
+git rm --cached other.log # --cached 参数表示不想删除本地文件 而是将其中暂存区中删除
+git commit -am "delete other.log"
+echo "some change " >> other.log
+git status
+    # 位于分支 master
+    # 无文件要提交，干净的工作区
+mkdir temp # 如果文件夹为空，git默认不讲空文件夹纳入到版本控制中
+           # 如果文件夹非空，就会被纳入版本控制中
+git status
+echo "hello" > temp/hello.txt
+git status -s # -s 是short的缩写，表示查看状态命令的简略模式 
+    # ?? temp/        # 第一列表示暂存区的状态 第二列表示工作区的状态
+vi .gitignore
+    # 添加 temp/    # 注意文件夹的格式是以斜线 / 结尾的
+git status -s 
+    #  M .gitignore      # M 表示.gitignore文件被修改过
+git commit -am "test ignore folder"
+git ls-files
+    # .gitignore
+    # file3.txt
+    # file4.txt
+    # file5.sh
+```
+**.gitignore文件的匹配规则**
+从上到下逐行匹配，每一行表示一个忽略模式  [详细规则](https://git-scm.com/docs/gitignore)
+1. 空行或以#开头的行会被git忽略，一般空行用于可读性的分割，#一般用作注释
+2. 使用标准的glob模式匹配，例如：
+    1. 星号 * 通配任意字符
+    2. 问号 ? 匹配单个字符
+    3. 中括号 [] 表示匹配列表中的单个字符，比如：[abc]表示a或b或c
+3. 两个星号**表示匹配任意的中间目录
+4. 中括号可以使用短中线连接，比如：
+    [0-9]表示任意一位数字，[a-z]表示任意一位小写字母
+5. 感叹号!表示取反
+    
+```bash
+# 示例
+# 忽略所有的.a文件
+*.a
+
+# 
+    
+    
