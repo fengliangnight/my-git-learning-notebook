@@ -11,25 +11,25 @@ git config --global credential.helper store # 保存用户名和密码，这样�
 git config --global --list # 参看git的配置信息
 ```
 ## **2.新建仓库**
-创建仓库
-方式一
+创建仓库  
+方式一  
 ```bash
-git init
+git init  
 ```
-方式二
+方式二  
 ```bash
-git clone
+git clone  
 ```
 ## **3 工作区域和文件状态**
-git 的本地数据管理分为三个区域：
-工作区(Working Directory)
-暂存区(staging Area/Index)
-本地仓库(Local Repository)
-|工作区||暂存区||本地仓库|
+git 的本地数据管理分为三个区域：  
+工作区(Working Directory)  
+暂存区(staging Area/Index)  
+本地仓库(Local Repository)  
+|工作区||暂存区||本地仓库| 
 |-|-|-|-|-|
 |.git所在的目录|<span style="color:green">$\xrightarrow{\text{git add}}$</span>|.git/index|<span style="color:green">$\xrightarrow{\text{git add}}$</span>|.git/objects|
-
-git中的文件也存在几种状态
+  
+git中的文件也存在几种状态  
 |未跟踪(Untrack)|未修改(unmodified)|已修改(Modified)|已暂存(staged)|
 |-|-|-|-|
 |新创建的还没有被git管理起来的文件|已经被git管理起来，但是文件内容没有变化|已经修改了文件，但是还没有添加到暂存区里面|已经修改了并且已经添加到暂存区里的文件|
@@ -67,7 +67,7 @@ git log --oneline # 查看简洁的提交记录
 ```
 
 ## **5 git reset回退版本**
-git reset的三种模式
+git reset的三种模式  
 ||工作区|暂存区|
 |-|-|-|
 |git reset --soft|√|√|
@@ -124,7 +124,7 @@ cat file3.txt
 git ls-files # 暂存区里已经没有file3.txt
 ```
 
-git 中的所有操作都是可以回溯的
-```git reflog```查看我们操作的历史记录
-找到误操作之前的版本号
+git 中的所有操作都是可以回溯的  
+```git reflog```查看我们操作的历史记录  
+找到误操作之前的版本号  
 ```git reset --hard 版本号```回退到这个版本
