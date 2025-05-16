@@ -2,10 +2,10 @@
 ## **1 安装和初始化**
 ```bash
 git -version # 查看版本号信息
-git config --global user.name "fengliangnight" # 配置用户名 其中，--global表示全局配置，对所有仓库有效  使用最多
+git config --global user.name "your_name" # 配置用户名 其中，--global表示全局配置，对所有仓库有效  使用最多
                                                               # --system表示系统配置，对所有用户有效 一般不会使用system
                                                               # 缺省（local）表示本地配置，秩对本地仓库有效
-git config --global user.email username@mail.com # 配置邮箱 
+git config --global user.email "your_email@example.com" # 配置邮箱 
                                                  # 这两个命令只需要执行一次
 git config --global credential.helper store # 保存用户名和密码，这样就不用每次都输入了
 git config --global --list # 参看git的配置信息
@@ -391,9 +391,62 @@ git ls-files
     
 ```bash
 # 示例
-# 忽略所有的.a文件
+# 忽略所有的 .a 文件
 *.a
 
-# 
+# 但跟踪所有的 lib.a 即便你在前面忽略了 .a 文件
+!lib.a
+
+# 之忽略当前目录下的 TODO 文件，而不忽略 subdir/TODO
+/TODO
+
+# 忽略任何目录下名为  build 的文件夹
+build/
+
+# 忽略 doc/notes.txt 但不忽略 doc/server/arch.txt
+doc/*.txt
+
+# 忽略 doc/ 目录及其所有子目录下的 .pdf 文件
+doc/**/*.pdf
+```
     
+[提供了了各种常见语言的忽略文件模板](https://github.com/github/gitignore)
     
+## **9 SSH配置和克隆仓库**
+```bash
+# 配置SSH密钥
+cd ~
+cd .ssh
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com" # -t 指定协议为RSA -b 指定生成的大小为4096
+    # Generating public/private rsa key pair.
+    # Enter file in which to save the key (/root/.ssh/id_rsa):      # 如果是第一次创建，直接回车就行，它会在~/.ssh目录下生成一个id_rsa的密钥文件
+                                                                    # 输入 新的文件名（比如：test）
+    # Enter passphrase (empty for no passphrase): 
+    # Enter same passphrase again: 
+    # Your identification has been saved in test
+    # Your public key has been saved in test.pub
+    # The key fingerprint is:
+    # SHA256:GtxI8YYQooW6mtZ7Tqd1BK1XlyIoxL01T8Gt67a8iSs root@dsw-1079058-6d7cc4b567-jh54z
+    # The key's randomart image is:
+ls -ltr
+    # -rw-r--r-- 1 root root  759  5月 16 11:43 test.pub       # 公钥文件，上传至github
+    # -rw------- 1 root root 3454  5月 16 11:43 test           # 私钥文件, 不能泄露
+vi test.pub
+    # 复制公钥文件
+```
+将复制的公钥文件上传至github(settings -> SSH and GPG keys -> New SSH key)  
+如果是第一次创建SSH密钥，而且在创建密钥的时候也没有修改过默认的文件名的话，SSH密钥的配置到这里就完成了  
+如果是刚刚指定了一个文件名的话，还需增加一步配置  
+```bash
+tail -5 config # 创建一个config文件，并将下面五行内容添加到文件中
+# github
+Host github.com
+HostName github.com
+PreferredAuthentications publickey
+IdentityFile ~/.ssh/test
+```
+    
+|本地仓库(Local Repo)|⬅git clone|远程仓库(Remote Repo)|
+|-|-|-|
+||⬅git pull(把远程仓库的修改拉取到本地仓库)||
+||➡git push(把本地仓库的修改推送给远程仓库)||
