@@ -461,9 +461,9 @@ IdentityFile ~/.ssh/test
 ||$\longrightarrow$```git push```(把本地仓库的修改推送给远程仓库)||
     
 ## **10 关联本地仓库和远程仓库**
-**step 1**
+**step 1**  
 ```git remote add <远程仓库别名> <远程仓库地址>```
-**step 2**
+**step 2**  
 ```git push -u <远程仓库名> <分支名>```
 ```bash
 # 现在github上创建好一个新的仓库 例如 first-repo
@@ -486,12 +486,12 @@ git push -u origin main # 把本地的main分支和远程仓库的main分支关�
 git pull origin main # 仓库名称 和 分支名称 可省略 默认就是拉取仓库别名为origin的main分支
                      # 作用 将远程仓库的指定分支拉取到本地在合并
 ```
-执行```git pull```需要注意的是在执行完```git pull```之后，git会自动为我们执行以此合并操作，如果远程仓库中的修改内容和本地仓库中的修改内容没有冲突的话，那么合并操作就会成功，否则就会失败，这是需要手动解决以下冲突  
-从远程仓库获取内容还可使用```git fetch```，区别在于，```git fetch```只是获取远程仓库的修改，但是并不会自动合并到本地仓库中，而是需要我们手动合并
+执行```git pull```需要注意的是在执行完```git pull```之后，git会自动为我们执行以此合并操作，如果远程仓库中的修改内容和本地仓库中的修改内容没有冲突的话，那么合并操作就会成功，否则就会失败，这是需要手动解决以下冲突   
+从远程仓库获取内容还可使用```git fetch```，区别在于，```git fetch```只是获取远程仓库的修改，但是并不会自动合并到本地仓库中，而是需要我们手动合并  
 
 ## **11 [Gitee](gitee.com)的使用和[GitLab](gitlab.com)的本地化部署**
 省略
-## **12 分支简介和基本操作 
+## **12 分支简介和基本操作** 
 ```bash
 mkdir brach-demo
 cd brach-demo
@@ -629,5 +629,5 @@ git rebase dev # 将当前分支main变基到目标分支dev上
 |缺点|会产生额外的提交节点，分支图比较复杂|会改变提交历史，改变了当前分支branch out的节点，避免在共享分支中使用，一般不会在公共的分支上执行rebase操作|
 
 ## **15 分支管理和工作流模型**
-    [**Gitflow工作流模型**](https://zhuanlan.zhihu.com/p/389877465)
+[**Gitflow工作流模型**](https://zhuanlan.zhihu.com/p/389877465)
     
