@@ -455,7 +455,7 @@ PreferredAuthentications publickey
 IdentityFile ~/.ssh/test
 ```
     
-|本地仓库(Local Repo)|⬅git clone|远程仓库(Remote Repo)|
+|本地仓库(Local Repo)|$\longleftarrow$```git clone```|远程仓库(Remote Repo)|
 |-|-|-|
 ||$\longleftarrow$```git pull```(把远程仓库的修改拉取到本地仓库)||
 ||$\longrightarrow$```git push```(把本地仓库的修改推送给远程仓库)||
@@ -629,5 +629,5 @@ git rebase dev # 将当前分支main变基到目标分支dev上
 |缺点|会产生额外的提交节点，分支图比较复杂|会改变提交历史，改变了当前分支branch out的节点，避免在共享分支中使用，一般不会在公共的分支上执行rebase操作|
 
 ## **15 分支管理和工作流模型**
-    [**Gitflow工作流模型](https://bbs.huaweicloud.com/blogs/281789?utm_source=zhihu&utm_medium=bbs-ex&utm_campaign=developer&utm_content=content)
+    [**Gitflow工作流模型**](https://zhuanlan.zhihu.com/p/389877465)
     
