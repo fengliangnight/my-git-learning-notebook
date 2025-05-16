@@ -41,6 +41,15 @@ git中的文件也存在几种状态
 |git add|添加到暂存区|
 |git commit|提交(只会提交暂存区中的文件，不会提交工作区中的文件)|
 
+补充
+|文件状态|含义|
+|-|-|
+|??(Untracked)|未跟踪|
+|M(Modified)|已修改|
+|A(Added)|已添加暂存|
+|D(Deleted)|已删除|
+|R(Renemed)|重命名|
+|U(Updated)|已更新未合并|
 ```bash
 # 示例
 cd my-repo 
@@ -410,7 +419,7 @@ doc/*.txt
 doc/**/*.pdf
 ```
     
-[提供了了各种常见语言的忽略文件模板](https://github.com/github/gitignore)
+[提供了各种常见语言的忽略文件模板](https://github.com/github/gitignore)
     
 ## **9 SSH配置和克隆仓库**
 ```bash
@@ -448,5 +457,177 @@ IdentityFile ~/.ssh/test
     
 |本地仓库(Local Repo)|⬅git clone|远程仓库(Remote Repo)|
 |-|-|-|
-||⬅git pull(把远程仓库的修改拉取到本地仓库)||
-||➡git push(把本地仓库的修改推送给远程仓库)||
+||$\longleftarrow$```git pull```(把远程仓库的修改拉取到本地仓库)||
+||$\longrightarrow$```git push```(把本地仓库的修改推送给远程仓库)||
+    
+## **10 关联本地仓库和远程仓库**
+**step 1**
+```git remote add <远程仓库别名> <远程仓库地址>```
+**step 2**
+```git push -u <远程仓库名> <分支名>```
+```bash
+# 现在github上创建好一个新的仓库 例如 first-repo
+# 本地有个my-repo的本地仓库
+cd my-repo
+# git remote add <shortname> <url> # 添加一个远程仓库
+git remote add origin git@github.com:fengliangnight/first-repo.git # origin 远程仓库的别名，一般默认的别名都是这个
+git remote -v # 查看当前仓库所对应的远程仓库的别名和地址
+    # origin  git@github.com:fengliangnight/first-repo.git (fetch)
+    # origin  git@github.com:fengliangnight/first-repo.git (push)
+# git branch -M main # 指定分支的名称为main 由于我们默认的分支名称就是main，这一行可以省略
+git push -u origin main # 把本地的main分支和远程仓库的main分支关联起来 
+                        # 全称应当为 git push -u origin main:main 
+                        # -u 是upstream的缩写，意思是把本地仓库与别名为origin的远程仓库关联起来
+                        # main:main 把本地仓库的main分支推送给远程仓库的main分支
+                        # 本地分支为master -> git push -u origin master:main
+```
+```git pull <远程仓库名> <远程分支名>:<本地分支>```
+```bash
+git pull origin main # 仓库名称 和 分支名称 可省略 默认就是拉取仓库别名为origin的main分支
+                     # 作用 将远程仓库的指定分支拉取到本地在合并
+```
+执行```git pull```需要注意的是在执行完```git pull```之后，git会自动为我们执行以此合并操作，如果远程仓库中的修改内容和本地仓库中的修改内容没有冲突的话，那么合并操作就会成功，否则就会失败，这是需要手动解决以下冲突  
+从远程仓库获取内容还可使用```git fetch```，区别在于，```git fetch```只是获取远程仓库的修改，但是并不会自动合并到本地仓库中，而是需要我们手动合并
+
+## **11 [Gitee](gitee.com)的使用和[GitLab](gitlab.com)的本地化部署**
+省略
+## **12 分支简介和基本操作 
+```bash
+mkdir brach-demo
+cd brach-demo
+git init 
+# 为方便 使用 分支名+序号 命名文件 
+# 分支名+冒号+序号 编写提交记录
+echo main1 > main1.txt
+git add .
+git commit -m "main:1"
+echo main2 > main2.txt
+git add .
+git commit -m "main:2"
+echo main3 > main3.txt
+git add .
+git commit -m "main:3"
+git branch # 查看当前仓库的所有分支
+    # * master   # 命令行中带有 * 就是目前所处在的分支
+git branch dev # git branch <分支名>    创建新的分支 但没有切换到这个分支上
+git branch 
+    #   dev
+    # * master
+git checkout dev # git checkout <分支名>   切换到不同的分支
+                 # 但要注意git checkout 不仅有 切换分支 的作用
+                                       # 还有 恢复文件 的作用
+                 # 当文件名与分支名相同时，就会产生歧义，git checkout 默认切换分支，而不是恢复文件
+                 # 为了避免这种歧义，git官方在2.23版本开始为我们提供了一个新命令
+                         # git switch <分支名>
+git switch master 
+git switch dev
+echo dev1 > dev1.txt
+git add .
+git commit -m "dev:1"
+echo dev2 > dev2.txt
+git add . 
+git commit -m "dev:2"
+ls 
+    # dev1.txt  dev2.txt  main1.txt  main2.txt  main3.txt
+git switch master 
+ls 
+    # main1.txt  main2.txt  main3.txt
+echo main4 > main4.txt
+git add .
+git commit -m "main:4"
+echo main5 > main5.txt
+git add .
+git commit -m "main:5"
+git merge dev # git merge <将要合并的分支>   当前所在的分支就是合并后的目标分支
+git log --graph --oneline --decorate --all # 查看分支图
+git branch
+    #   dev
+    # * master
+git branch -d dev # 删除已经完成合并的分支 
+                  # 如果没有合并的话 就不能使用 -d 参数 删除分支
+                  # git branch -D <branch-name>  删除没有合并的分支
+```
+
+## **13 解决合并冲突**
+``` bash
+git branch feat
+git switch feat
+ls
+vi main1.txt
+    # 添加内容： 这是feat分支中添加的内容
+git commit -am "feat:1"
+git switch master 
+cat main1.txt
+vi main1.txt
+    # 添加内容： 这是master分支中添加的内容
+git commit -am "main:6"
+git merge feat
+    # 自动合并 main1.txt
+    # 冲突（内容）：合并冲突于 main1.txt
+    # 自动合并失败，修正冲突然后提交修正的结果。 
+git status
+    # 自动合并 main1.txt
+    # 冲突（内容）：合并冲突于 main1.txt
+    # 自动合并失败，修正冲突然后提交修正的结果。
+    # root@dsw-1079730-5498c98d5b-gzgnj:/mnt/workspace/brach-demo# git status
+    # 位于分支 master
+    # 您有尚未合并的路径。
+    # （解决冲突并运行 "git commit"）
+    #  （使用 "git merge --abort" 终止合并）
+
+    # 未合并的路径：
+    #  （使用 "git add <文件>..." 标记解决方案）
+    #        双方修改：   main1.txt
+
+    # 修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
+git diff    
+    # diff --cc main1.txt
+    # index 9931141,849af09..0000000
+    # --- a/main1.txt
+    # +++ b/main1.txt
+    # @@@ -1,2 -1,2 +1,6 @@@
+    #   main1
+    # ++<<<<<<< HEAD
+    #  +这是master分支中添加的内容
+    # ++=======
+    # + 这是feat分支中添加的内容
+    # ++>>>>>>> feat
+vi main1.txt
+    # 手动修改
+git add .
+git commit -m "merge conflict"
+# 如果想终端这次合并的话 可以使用 
+# git merge --abort
+```
+
+## **14 回退和Rebase**
+```git rebase <branch-name>```
+可以在任意分支上执行**rebase**操作
+
+```bash
+git branch -d feat
+git checkout -b dev 0fb1fc8 # 将dev分支恢复到合并之前的状态
+git log --oneline --graph --decorate --all # 小窍门 可以使用 alias 命令将其定义成一个别名
+alias graph="git log --oneline --graph --decorate --all"
+graph
+git switch master
+git reset --hard  1ad9d54 # 将master分支也回退到合并之前的状态
+cd ..
+cp -rf branch-demo rebase1
+cp -rf branch-demo rebase2
+cd rebase1
+git switch dev 
+git rebase main # 将当前的dev分支变基到目标的main分支上
+cd ../rebase2
+git rebase dev # 将当前分支main变基到目标分支dev上
+```
+    
+**rebase**与**merge**有什么区别，该如何区分使用
+||```merge```|```rebase```|
+|-|-|-|
+|优点|不会破坏缘分支的提交历史，方便回溯和查看|不会新增额外的提交记录，形成线性历史，比较直观和干净|
+|缺点|会产生额外的提交节点，分支图比较复杂|会改变提交历史，改变了当前分支branch out的节点，避免在共享分支中使用，一般不会在公共的分支上执行rebase操作|
+
+## **15 分支管理和工作流模型**
+    [**Gitflow工作流模型](https://bbs.huaweicloud.com/blogs/281789?utm_source=zhihu&utm_medium=bbs-ex&utm_campaign=developer&utm_content=content)
+    
