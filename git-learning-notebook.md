@@ -157,7 +157,7 @@ git add file2.txt
 git commit -m "commit2"
 git add file3.txt
 git commit -m "commit3"
-git log -oneline
+git log --oneline
     # ad3e1f2 (HEAD -> master) commit3
     # 477b262 commit2
     # 3b39300 commit1
