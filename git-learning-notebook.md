@@ -1,4 +1,5 @@
 # **git学习笔记**
+[git 官网](https://git-scm.com/?spm=5176.28103460.0.0.4acd1db8qKSk5m)
 ## **1 安装和初始化**
 ```bash
 git -version # 查看版本号信息
