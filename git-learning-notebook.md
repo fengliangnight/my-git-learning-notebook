@@ -298,7 +298,7 @@ git commit -m "delete"
 |√|忽略所有.pem文件|
 ||...|
     
-**应该忽略哪些文件**
+**应该忽略哪些文件**  
 1. 系统或软件自动生成的文件
 2. 编译产生的中间文件和结果文件
 3. 运行时生成日志文件、缓存文件、临时文件
@@ -387,10 +387,10 @@ git ls-files
     # file4.txt
     # file5.sh
 ```
-**.gitignore文件的匹配规则**
-从上到下逐行匹配，每一行表示一个忽略模式  [详细规则](https://git-scm.com/docs/gitignore)
-1. 空行或以#开头的行会被git忽略，一般空行用于可读性的分割，#一般用作注释
-2. 使用标准的glob模式匹配，例如：
+**.gitignore文件的匹配规则**  
+从上到下逐行匹配，每一行表示一个忽略模式  [详细规则](https://git-scm.com/docs/gitignore)  
+1. 空行或以#开头的行会被git忽略，一般空行用于可读性的分割，#一般用作注释  
+2. 使用标准的glob模式匹配，例如：  
     1. 星号 * 通配任意字符
     2. 问号 ? 匹配单个字符
     3. 中括号 [] 表示匹配列表中的单个字符，比如：[abc]表示a或b或c
@@ -463,9 +463,9 @@ IdentityFile ~/.ssh/test
     
 ## **10 关联本地仓库和远程仓库**
 **step 1**  
-```git remote add <远程仓库别名> <远程仓库地址>```
-**step 2**  
-```git push -u <远程仓库名> <分支名>```
+```git remote add <远程仓库别名> <远程仓库地址>```  
+**step 2**    
+```git push -u <远程仓库名> <分支名>```  
 ```bash
 # 现在github上创建好一个新的仓库 例如 first-repo
 # 本地有个my-repo的本地仓库
@@ -602,7 +602,7 @@ git commit -m "merge conflict"
 ```
 
 ## **14 回退和Rebase**
-```git rebase <branch-name>```
+```git rebase <branch-name>```   
 可以在任意分支上执行**rebase**操作
 
 ```bash
